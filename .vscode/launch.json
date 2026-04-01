@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Cyber Battle",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/cyber_battle.py",
+            "console": "integratedTerminal"
+        }
+    ]
+}
