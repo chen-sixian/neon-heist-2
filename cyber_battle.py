@@ -19,9 +19,9 @@ class CyberEntity:
     def is_alive(self):
         return self.hp > 0
 
-    def take_power(self, power):
-        self.hp = max(0, self.hp - power)
-        print(f"  [{self.name}] took {power} power! Remaining HP: {self.hp}")
+    def take_damage(self, damage):
+        self.hp = max(0, self.hp - damage)
+        print(f"  [{self.name}] took {damage} damage! Remaining HP: {self.hp}")
 
     def act(self, enemies, allies):
         """Override in subclasses to define combat behavior."""
@@ -31,26 +31,26 @@ class CyberEntity:
 # --- Combat Classes ---
 
 class Vanguard(CyberEntity):
-    """High HP frontliner dealing consistent physical power."""
+    """High HP frontliner dealing consistent physical damage."""
 
     def __init__(self, name):
         super().__init__(name, hp=1200)
-        self.attack_power = 120
+        self.attack_damage = 120
 
     def act(self, enemies, allies):
         target = random.choice(enemies)
         print(f"\n> {self.name} (Vanguard) fires a plasma rifle at {target.name}!")
-        target.take_power(self.attack_power)
+        target.take_damage(self.attack_damage)
 
 
 class Hacker(CyberEntity):
-    """Energy-based class using Battery (mana) for high burst power."""
+    """Energy-based class using Battery (mana) for high burst damage."""
 
     def __init__(self, name):
         super().__init__(name, hp=800)
         self.max_battery = 50
         self.battery = 50
-        self.hack_power = 220
+        self.hack_damage = 220
         self.hack_cost = 20
 
     def act(self, enemies, allies):
@@ -59,25 +59,25 @@ class Hacker(CyberEntity):
             self.battery -= self.hack_cost
             target = random.choice(enemies)
             print(f"  Execution successful! Hacking {target.name}'s mainframe!")
-            target.take_power(self.hack_power)
+            target.take_damage(self.hack_damage)
         else:
             self.battery = min(self.max_battery, self.battery + 30)
             print(f"  Low battery! Recharging... Current Battery: {self.battery}")
 
 
 class CyberBrawler(Vanguard):
-    """Berserker variant: doubles power when HP falls to 50% or below."""
+    """Berserker variant: doubles damage when HP falls to 50% or below."""
 
     def act(self, enemies, allies):
-        current_power = self.attack_power
+        current_damage = self.attack_damage
 
         if self.hp <= self.max_hp / 2:
-            print(f"\n> [SYSTEM WARNING] {self.name}'s Adrenaline Pump Activated! power DOUBLED!")
-            current_power = current_power * 2
+            print(f"\n> [SYSTEM WARNING] {self.name}'s Adrenaline Pump Activated! damage DOUBLED!")
+            current_damage = current_damage * 2
 
         target = random.choice(enemies)
         print(f"\n> {self.name} (CyberBrawler) delivers a devastating mechanical punch to {target.name}!")
-        target.take_power(current_power)
+        target.take_damage(current_damage)
 
 
 class NetRunner(Hacker):
@@ -88,10 +88,10 @@ class NetRunner(Hacker):
 
         if len(alive_allies) == 1 and self.battery >= self.hack_cost:
             self.battery -= self.hack_cost
-            emp_power = self.hack_power * 2
+            emp_damage = self.hack_damage * 2
             print(f"\n> [CRITICAL] {self.name} (NetRunner) is the last one alive! Initiating EMP OVERLOAD!")
             for enemy in enemies:
-                enemy.take_power(emp_power)
+                enemy.take_damage(emp_damage)
         else:
             super().act(enemies, allies)
 

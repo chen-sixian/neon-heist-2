@@ -20,20 +20,20 @@ neon-heist/
 ## Class Hierarchy
 
 ```
-CyberEntity (Base Class — handles HP, alive status, taking power)
-├── Vanguard (Physical power dealer)
-│   └── CyberBrawler — Doubles power when HP drops below 50%
-└── Hacker (Battery-powered burst power)
+CyberEntity (Base Class — handles HP, alive status, taking damage)
+├── Vanguard (Physical damage dealer)
+│   └── CyberBrawler — Doubles damage when HP drops below 50%
+└── Hacker (Battery-damageed burst damage)
     ├── NetRunner — Unleashes AoE EMP blast if last squad member alive
     └── BioEngineer — Uses battery to revive dead allies at 50% HP
 ```
 
 ## Unit Stats
 
-| Class | HP | Resource | power | Special |
+| Class | HP | Resource | damage | Special |
 |---|---|---|---|---|
-| Vanguard | 1200 | None | 120/turn | Reliable sustained power |
-| CyberBrawler | 1200 | None | 120 → 240 | power doubles below 50% HP |
+| Vanguard | 1200 | None | 120/turn | Reliable sustained damage |
+| CyberBrawler | 1200 | None | 120 → 240 | damage doubles below 50% HP |
 | Hacker | 800 | 50 Battery | 220/hack | Recharges when battery runs out |
 | NetRunner | 800 | 50 Battery | 220 / 440 AoE | EMP Overload if last alive |
 | BioEngineer | 800 | 50 Battery | 220/hack | Prioritizes reviving dead allies |
@@ -48,7 +48,7 @@ Each round, all alive units from both squads get shuffled into one turn order so
 
 **Polymorphism** — Every subclass overrides the `act()` method with its own behavior. The battle engine just calls `unit.act()` on whatever unit it is — it doesn't need to know which class it's dealing with.
 
-**Encapsulation** — Things like `battery` and `hp` are managed through methods like `take_power()` and `is_alive()` instead of being modified directly from outside.
+**Encapsulation** — Things like `battery` and `hp` are managed through methods like `take_damage()` and `is_alive()` instead of being modified directly from outside.
 
 **Method overriding with super()** — `NetRunner` and `BioEngineer` check a condition first (last alive? any dead allies?) and if it's not met, they fall back to their parent class behavior using `super().act()`.
 
@@ -70,11 +70,11 @@ python cyber_battle.py
 ========== Round 1 ==========
 
 > Neon (CyberBrawler) delivers a devastating mechanical punch to Ghost!
-  [Ghost] took 120 power! Remaining HP: 680
+  [Ghost] took 120 damage! Remaining HP: 680
 
 > Ghost (Hacker) is executing a routine...
   Execution successful! Hacking Doc's mainframe!
-  [Doc] took 220 power! Remaining HP: 580
+  [Doc] took 220 damage! Remaining HP: 580
 
 ...
 
@@ -83,7 +83,7 @@ python cyber_battle.py
 
 ## Some Ideas I Might Add Later
 
-- A new unit class like a Shield Tank that blocks power for allies
+- A new unit class like a Shield Tank that blocks damage for allies
 - Status effects (stun, poison, etc.)
 - A menu to pick your own team before the battle starts
 - Running multiple battles to see which team wins more often

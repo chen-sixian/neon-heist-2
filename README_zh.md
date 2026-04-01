@@ -18,8 +18,9 @@
 python cyber_battle.py
 运行单元测试套件：
 python test_cyber_battle.py
+```
 
-🗂️ 项目结构
+## 🗂️ 项目结构
 neon-heist/
 ├── cyber_battle.py          # 核心引擎与所有类的定义
 ├── test_cyber_battle.py     # 单元测试套件
